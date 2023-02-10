@@ -1,0 +1,105 @@
+Tools reuired for project:
+1) Code
+2) Container Docker
+3) Github
+4) AWS EC2
+5) Jenkins 
+
+
+===================================
+
+1) Launch EC2 instance in AWS. 
+2) Login to instance and install Jenkins 
+3) IN EC2 Tranmission protocal 8080 port needs to be added in the security to allow the access for the IP to access the Jenkins
+ubuntu@ip-172-31-52-115:~$ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+7d3c6668fa244c7f90eeed645eba6653
+
+http://54.237.45.23:8080/
+
+4) Then start steting up the Jenkins andselect free style pipeline. 
+5) We need to connect to the Jenkins and Git so that Jenkins pull the code from the Git. 
+6) Then we can follow to do list for the devloper to install the depandincices of the application.
+7) So once we set up and proivde the 8000 port access to public we can run the application on our local.  
+===> But here challange if we close the script the application will be closed.
+
+To overcome this we did will use the configure Docker now.
+
+8) Then the above step we did can be made in the automation.
+9)  For that will install the docker file. 
+10) #sudo apt install docker.io
+sudo apt install docker.io
+FROM node:12.2.0-alpine
+WORKDIR app
+COPY . .
+RUN npm install
+EXPOSE 8000
+CMD ["node","app.js"]
+docker build . -t node-app
+sudo usermod -a -G docker $USER
+docker run -d --name node-todo-app -p 8000:8000 todo-node-app
+Got to jenkins job
+Execute shell 
+docker build . -t node-app-todo
+docker run -d --name node-app-container -p 8000:8000 node-app-todo
+
+
+https://docs.google.com/document/d/1qos4eUfY4vZojjnZLSGw8D3A46Yy2r42uiZPyPxL17A/edit
+https://www.youtube.com/watch?v=nplH3BzKHPk&t=602s
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://www.trainwithshubham.com/blog/install-jenkins-on-aws
+Install Jenkins on AWS
+How can you easily setup Jenkins on AWS EC2 instance (Ubuntu)
+Easy Installation
+"Everything is out there you just need to look closely" — Shubham Londhe
+
+Step - 1 Install Java
+
+Update your system
+
+
+sudo apt update
+Install java
+sudo apt install openjdk-11-jre
+Validate Installation
+
+java -version
+It should look something like this
+
+openjdk version "11.0.12" 2021-07-20 OpenJDK Runtime Environment (build 11.0.12+7-post-Debian-2) OpenJDK 64-Bit Server VM (build 11.0.12+7-post-Debian-2, mixed mode, sharing)
+Step - 2 Install Jenkins
+
+Just copy these commands and paste them onto your terminal.
+
+
+curl -fsSL https://pkg.jenkins.io/debian/jenkins.io.key | sudo tee \   /usr/share/keyrings/jenkins-keyring.asc > /dev/null 
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \   https://pkg.jenkins.io/debian binary/ | sudo tee \   /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update 
+sudo apt-get install jenkins
+
+
+Step -3 Start jenkins
+
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+sudo systemctl status jenkins
+Step - 4 Open port 8080 from AWS Console:
+You are watching my videos, right ?
